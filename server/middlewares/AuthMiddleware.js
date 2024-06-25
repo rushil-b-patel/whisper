@@ -6,11 +6,24 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 export const userVerification = async (req, res) =>{
     const token = req.cookies.token;
-    if(!token) return res.status(401).json({status:false});
+    console.log(token)
+    if(!token){
+        return res.status(401).json({status:false, message:"No token provided"});
+    } 
+
     jwt.verify(token, JWT_SECRET, async(err, data) =>{
-        if(err) return res.status(401).json({status:false});
-        const user = await User.findById(data.id);
-        if(!user) return res.status(401).json({status:false});
-        res.status(200).json({status:true, user:username})
+        console.log(JWT_SECRET)
+        console.log(data);
+        console.log(err);
+        if(data){
+            const user = await User.findById(data.user);
+            if(!user){
+                return res.status(401).json({status:false, message:"User doesn't exist"});
+            } 
+            res.status(200).json({status:true, user: user.username})    
+        }
+        else{
+            return res.status(401).json({status:false, message:"Invalid token"});
+        }
     })
 }

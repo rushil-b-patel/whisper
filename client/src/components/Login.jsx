@@ -1,5 +1,7 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Login = () => {
   
@@ -16,18 +18,23 @@ const Login = () => {
   }
 
   const handleError = (err) => {
+    console.log("Error")
     toast.error(err, { position: "bottom-left" });
   }
   const handleSucess = (err) => {
+    console.log("Success")
     toast.success(err, { position: "bottom-right" });
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:3000/login', ...input, { withCredentials: true });
-      const { success, message } = res;
+      const res = await axios.post('http://localhost:3000/login', input, { withCredentials: true });
+      console.log(res);
+      const { success, message } = res.data;
+      console.log(success);
       if (success) {
+        console.log("if condition")
         handleSucess(message);
         setTimeout(() => {
           navigate('/');
@@ -66,9 +73,9 @@ const Login = () => {
             </label>
             <input
               id="handleOrEmail"
-              name="handleOrEmail"
+              name="email"
               value={email}
-              type="text"
+              type="email"
               className="ml-2 mt-1 block w-3/4 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none sm:text-sm"
               placeholder="Enter your handle or email"
               onChange={handleOnChange}

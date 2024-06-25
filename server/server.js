@@ -9,8 +9,11 @@ dotenv.config();
 
 const PORT = process.env.PORT;
 const MONGO_URI = process.env.MONGO_URI; 
-
-app.use(cors());
+const corsOptions = {
+    origin: 'http://localhost:5173', 
+    credentials: true,
+  };
+app.use(cors(corsOptions));
 app.use(express.json());
 
 mongoose.connect(MONGO_URI)

@@ -11,8 +11,9 @@ function Home() {
 
   useEffect(() => {
     const verifyCookie = async () => {
-      console.log(cookies)
-      if(!cookies.token){
+      console.log("token : " + cookies.token)
+      const token = cookies.token;
+      if(!token){
         console.log('No token found');
         navigate('/login');
       }
@@ -40,7 +41,7 @@ function Home() {
     <div className='text-4xl text-center font-bold'>
       Welcome {username}
     </div>
-    <button onClick={handleLogout} className='bg-red-500 text-white px-4 py-2 rounded-lg mt-5'>Logout</button>
+    <button onClick={handleLogout} className='flex justify-center text-black px-4 py-2 border-2 rounded-lg mt-5'>Logout</button>
     </>
   )
 }

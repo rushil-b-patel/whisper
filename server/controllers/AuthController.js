@@ -4,14 +4,18 @@ import { createToken } from '../utils/SecretToken.js';
 
 export const register = async (req, res, next) => {
     try{
+        console.log("in server"+req.body)
         const {email, password, username} = req.body;
+
         const userExist = await User.findOne({email});
         if(userExist) return res.status(400).json({message:"User already exists"});
+        
         const hashedPassword = await bcrypt.hash(password, 12);
         const user = await User.create({email, password:hashedPassword, username, createdAt : new Date()});
         const token = createToken(user._id);
         res.cookie('token', token, {withCredentials: true, httpOnly:false});
         res.status(201).json({message:"User created successfully", success:true, user});
+        
         next();
     }
     catch(err){

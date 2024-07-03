@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 
 const Login = () => {
   
@@ -19,11 +19,11 @@ const Login = () => {
 
   const handleError = (err) => {
     console.log("Error")
-    toast.error(err, { position: "bottom-left" });
+    toast.error(err, { position: "top-left" });
   }
   const handleSucess = (err) => {
     console.log("Success")
-    toast.success(err, { position: "bottom-right" });
+    toast.success(err, { position: "top-right" });
   }
 
   const handleSubmit = async (e) => {
@@ -34,7 +34,6 @@ const Login = () => {
       const { success, message } = res.data;
       console.log(success);
       if (success) {
-        console.log("if condition")
         handleSucess(message);
         setTimeout(() => {
           navigate('/');
@@ -121,6 +120,7 @@ const Login = () => {
           </span>
         </div>
       </div>
+      {/* <ToastContainer /> */}
     </div>
   );
 };

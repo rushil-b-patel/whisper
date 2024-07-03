@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {ToastContainer, toast} from "react-toastify"; 
+import axios from "axios";
 const Register = () => {
 
     const navigate = useNavigate();
@@ -10,6 +11,9 @@ const Register = () => {
         password: "",
     });
     const [confirmPassword, setConfirmPassword] = useState("");
+    const handleConfirmPassword = (e) => {
+        setConfirmPassword(e.target.value);
+    }
 
     const { email, username, password } = input;
     const handleOnChange = (e) => {
@@ -18,17 +22,19 @@ const Register = () => {
     }
     
     const handleError = (err) => {
-        toast.error(err, {position:"bottom-left"}); 
+        toast.error(err, {position:"top-left"}); 
     }
     const handleSucess = (err) => {
-        toast.success(err, {position:"bottom-right"});
+        toast.success(err, {position:"top-right"});
     }
 
     const handleSubmit = async (e) => {
+        console.log("In handlesubmit")
         try{
             e.preventDefault();
-            const res = await axios.post('http://localhost:3000/register', ...input, {withCredentials:true});
-            const {success, message} = res;
+            const res = await axios.post('http://localhost:3000/register', input, {withCredentials:true});
+            console.log(res);
+            const {success, message} = res.data;
             if(success){
                 handleSucess(message);
                 setTimeout(()=>{
@@ -125,7 +131,7 @@ const Register = () => {
                             value={confirmPassword}
                             className="ml-2 mt-1 block w-3/4 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none sm:text-sm"
                             placeholder="Confirm your password"
-                            onChange={handleOnChange}
+                            onChange={handleConfirmPassword}
                         />
                     </div>
                     <div className="mt-5 flex justify-center">
@@ -146,7 +152,7 @@ const Register = () => {
                     </div>
                 </form>
             </div>
-            <ToastContainer />
+            {/* <ToastContainer /> */}
         </div>
     );
 };
